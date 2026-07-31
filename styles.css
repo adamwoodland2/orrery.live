@@ -1,0 +1,265 @@
+* { margin: 0; padding: 0; box-sizing: border-box; }
+html, body { height: 100%; overflow: hidden; background: #01020a; }
+canvas { display: block; }
+/* Visually hidden but present in the DOM for search engines and screen readers. */
+.sr-only {
+	position: absolute; width: 1px; height: 1px;
+	padding: 0; margin: -1px; overflow: hidden;
+	clip: rect(0, 0, 0, 0); white-space: nowrap; border: 0;
+}
+#ui {
+	position: fixed;
+	top: 16px;
+	left: 16px;
+	width: 340px;
+	z-index: 9;            /* above the planet labels (8) so they don't show through the panel */
+	padding: 14px 16px 12px;
+	background: rgba(4, 8, 18, 0.86);
+	border: 1px solid rgba(138, 172, 255, 0.18);
+	border-radius: 14px;
+	font: 13px/1.5 -apple-system, "Segoe UI", system-ui, sans-serif;
+	color: #edf2ff;
+	backdrop-filter: blur(12px);
+	user-select: none;
+	box-shadow: 0 20px 60px rgba(0, 0, 0, 0.35);
+	/* Never taller than the viewport; only the About text scrolls (below). */
+	max-height: calc(100vh - 32px);
+	max-height: calc(100dvh - 32px);
+	display: flex;
+	flex-direction: column;
+	overflow: hidden;
+}
+#ui { transition: width .18s ease; }
+/* The settings take the slack and scroll if the viewport is short; the About
+   text now lives in its own slide-out panel (below) rather than inline. */
+#uiBody { display: flex; flex-direction: column; flex: 1 1 auto; min-height: 0; overflow-y: auto; }
+#uiBody::-webkit-scrollbar { width: 8px; }
+#uiBody::-webkit-scrollbar-thumb { background: rgba(138, 172, 255, 0.3); border-radius: 4px; }
+#uiHeader { display: flex; align-items: center; justify-content: space-between; gap: 10px; flex: 0 0 auto; }
+#ui h1 { font-size: 16px; font-weight: 700; }
+#uiHeaderBtns { display: flex; gap: 5px; flex: 0 0 auto; align-items: stretch; }
+#collapse, #homeView, #resetView, #share, #shot { padding: 3px 8px; line-height: 1; font-size: 14px; }
+/* SVG icons (not font glyphs) so they centre identically in every browser/
+   font; the buttons stretch to match the collapse button's height. */
+#homeView, #resetView, #share, #shot { display: inline-flex; align-items: center; justify-content: center; }
+#homeView svg, #resetView svg, #share svg, #shot svg { display: block; }
+#ui.collapsed { width: auto; }
+#ui.collapsed #uiBody { display: none; }
+#ui.collapsed #collapse { transform: rotate(-90deg); }
+#ui p { margin: 8px 0 10px; opacity: .8; }
+/* "Following <body>" chip — visible only while the camera is locked to a body. */
+#followRow {
+	display: flex; align-items: center; justify-content: space-between; gap: 8px;
+	margin: 0 0 8px; padding: 5px 6px 5px 11px; border-radius: 9px;
+	background: rgba(110, 200, 160, 0.12);
+	border: 1px solid rgba(140, 220, 180, 0.28);
+	font-weight: 600;
+}
+#followRow[hidden] { display: none; }
+#followStop { padding: 3px 8px; font-size: 11px; }
+#dateRow {
+	display: flex; align-items: center; justify-content: space-between;
+	gap: 8px; margin: 6px 0;
+	padding: 9px 11px; border-radius: 9px;
+	background: rgba(120, 160, 255, 0.10);
+	border: 1px solid rgba(138, 172, 255, 0.18);
+}
+#dateValue { font-weight: 600; font-size: 14px; font-variant-numeric: tabular-nums; }
+#gotoRow { display: flex; flex-wrap: wrap; gap: 8px; align-items: center; margin-bottom: 8px; }
+#gotoRow input[type=date] {
+	flex: 1 1 84px; min-width: 0; font: inherit; color: inherit; padding: 6px 6px;
+	background: rgba(255,255,255,0.06); border: 1px solid rgba(255,255,255,0.18);
+	border-radius: 8px; color-scheme: dark;
+}
+#gotoRow #era {
+	flex: 0 0 auto; font: inherit; color: inherit; padding: 6px 4px;
+	background: rgba(255,255,255,0.06); border: 1px solid rgba(255,255,255,0.18);
+	border-radius: 8px; color-scheme: dark; cursor: pointer;
+}
+#gotoRow #era:focus { outline: 2px solid rgba(120,180,255,0.55); }
+#gotoRow #era option { background: #0b1020; color: #edf2ff; }
+.btn:disabled { opacity: .4; cursor: not-allowed; }
+#eventsRow, #gotoBodyRow { margin-bottom: 8px; }
+#eventsRow select, #gotoBodyRow select {
+	width: 100%; font: inherit; color: inherit; padding: 6px 8px;
+	background: rgba(255,255,255,0.06); border: 1px solid rgba(255,255,255,0.18);
+	border-radius: 8px; color-scheme: dark; cursor: pointer;
+}
+#eventsRow select:focus, #gotoBodyRow select:focus { outline: 2px solid rgba(120,180,255,0.55); }
+#eventsRow select option, #gotoBodyRow select option { background: #0b1020; color: #edf2ff; }
+#eventsRow select optgroup, #gotoBodyRow select optgroup { background: #0b1020; color: #8ea6d6; font-style: normal; }
+#filterRow {
+	margin-bottom: 8px; padding: 8px 10px 9px; border-radius: 9px;
+	border: 1px solid rgba(138, 172, 255, 0.18);
+	background: rgba(120, 160, 255, 0.06);
+	display: flex; flex-wrap: wrap; gap: 4px 14px;
+}
+#filterRow legend { padding: 0 5px; font-size: 11px; opacity: .65; }
+#filterRow label { display: flex; align-items: center; gap: 6px; flex: 1 1 44%; cursor: pointer; white-space: nowrap; }
+#filterRow input[type=checkbox] { accent-color: #6c8fd0; cursor: pointer; }
+#filterRow label:focus-within { outline: 2px solid rgba(120,180,255,0.45); border-radius: 5px; }
+.btn {
+	border: 1px solid rgba(255,255,255,0.18);
+	background: rgba(255,255,255,0.06);
+	color: inherit; padding: 7px 11px; border-radius: 8px; cursor: pointer; font: inherit;
+}
+.btn.accent { border-color: rgba(160,200,255,0.4); background: rgba(120,170,255,0.18); }
+.btn:focus { outline: 2px solid rgba(120,180,255,0.55); }
+#controls { display: flex; flex-wrap: wrap; gap: 8px; align-items: center; margin-top: 4px; }
+#controls label { display: flex; align-items: center; gap: 8px; white-space: nowrap; flex: 1 1 100%; margin-top: 4px; }
+#controls label input[type=range] { flex: 1; min-width: 0; }
+/* Fixed-width name + value so the slider track keeps a constant width. */
+#controls label .ctrlName { flex: 0 0 40px; }
+#controls label .ctrlValue { flex: 0 0 86px; }
+#timeControl { flex: 1 1 100%; }
+#timeControl .slider-wrap { position: relative; }
+#timeControl input[type=range] { width: 100%; display: block; }
+#timeControl .center-mark {
+	position: absolute; left: 50%; top: 50%; width: 2px; height: 16px;
+	transform: translate(-50%, -50%); background: rgba(168, 197, 255, 0.55);
+	border-radius: 1px; pointer-events: none;
+}
+#timeTicks { display: flex; justify-content: space-between; font-size: 10.5px; opacity: .5; margin-top: 2px; }
+#speedValue { text-align: center; margin-top: 4px; font-weight: 600; font-variant-numeric: tabular-nums; opacity: .92; }
+/* Exact-step buttons: ±1 day / month / year. */
+#stepRow { display: flex; gap: 4px; margin-top: 6px; }
+#stepRow .step { flex: 1 1 0; padding: 4px 0; font-size: 11px; text-align: center; font-variant-numeric: tabular-nums; }
+#aboutToggle { margin-top: 12px; width: 100%; text-align: left; font-size: 12px; opacity: .85; }
+#aboutToggle[aria-expanded="true"] { opacity: 1; }
+
+/* Slide-out About panel — sits exactly over the main panel, tucked off to the
+   left until opened, so it frees up the settings without a permanent footprint. */
+#aboutPanel {
+	position: fixed; top: 16px; left: 16px; width: 340px;
+	max-height: calc(100vh - 32px);
+	max-height: calc(100dvh - 32px);
+	padding: 14px 16px 12px;
+	background: rgba(4, 8, 18, 0.94);
+	border: 1px solid rgba(138, 172, 255, 0.22);
+	border-radius: 14px;
+	color: #edf2ff;
+	font: 13px/1.5 -apple-system, "Segoe UI", system-ui, sans-serif;
+	backdrop-filter: blur(12px);
+	box-shadow: 0 20px 60px rgba(0, 0, 0, 0.45);
+	display: flex; flex-direction: column;
+	z-index: 12;
+	transform: translateX(calc(-100% - 24px));
+	opacity: 0; visibility: hidden;
+	transition: transform .24s ease, opacity .24s ease, visibility 0s linear .24s;
+}
+#aboutPanel.open {
+	transform: translateX(0); opacity: 1; visibility: visible;
+	transition: transform .24s ease, opacity .24s ease;
+}
+#aboutHeader { display: flex; align-items: center; justify-content: space-between; gap: 10px; flex: 0 0 auto; margin-bottom: 4px; }
+#aboutHeader strong { font-size: 14px; color: #a8c5ff; }
+#aboutClose { padding: 3px 9px; line-height: 1; font-size: 13px; }
+#aboutPanelBody { flex: 1 1 auto; min-height: 0; overflow-y: auto; }
+#aboutPanelBody::-webkit-scrollbar { width: 8px; }
+#aboutPanelBody::-webkit-scrollbar-thumb { background: rgba(138, 172, 255, 0.3); border-radius: 4px; }
+
+/* Floating body name-tags, projected onto the canvas (toggled in Show). */
+#labels { position: fixed; inset: 0; pointer-events: none; z-index: 8; overflow: hidden; }
+.planet-label {
+	position: absolute; transform: translate(-50%, 10px); white-space: nowrap;
+	font: 600 11px/1 -apple-system, "Segoe UI", system-ui, sans-serif;
+	color: #dfe8ff; letter-spacing: .04em;
+	text-shadow: 0 0 4px rgba(0,0,0,0.95), 0 1px 3px rgba(0,0,0,0.9);
+	opacity: .9;
+}
+/* Moon labels: smaller and dimmer; only shown when zoomed in near the planet. */
+.moon-label {
+	position: absolute; transform: translate(-50%, 8px); white-space: nowrap;
+	font: 600 10px/1 -apple-system, "Segoe UI", system-ui, sans-serif;
+	color: #c6d4f2; letter-spacing: .04em;
+	text-shadow: 0 0 4px rgba(0,0,0,0.95), 0 1px 3px rgba(0,0,0,0.9);
+	opacity: .85;
+}
+/* Named bright stars on the celestial sphere (share the Labels toggle). */
+.star-label {
+	position: absolute; transform: translate(-50%, -50%); white-space: nowrap;
+	font: 500 9.5px/1 -apple-system, "Segoe UI", system-ui, sans-serif;
+	color: #8fa8dc; letter-spacing: .06em;
+	text-shadow: 0 0 4px rgba(0,0,0,0.95), 0 1px 3px rgba(0,0,0,0.9);
+	opacity: .8;
+}
+/* AU-grid ring distances and the vernal equinox marker (shown with the grid). */
+.grid-label {
+	position: absolute; transform: translate(-50%, -50%); white-space: nowrap;
+	font: 500 9.5px/1 -apple-system, "Segoe UI", system-ui, sans-serif;
+	color: #8ea0c4; letter-spacing: .05em;
+	text-shadow: 0 0 4px rgba(0,0,0,0.95), 0 1px 3px rgba(0,0,0,0.9);
+	opacity: .75;
+}
+#legend, #datesNote, #extrasNote, #kbdNote { margin-top: 10px; font-size: 11.5px; opacity: .7; }
+#datesNote, #extrasNote, #kbdNote { margin-top: 8px; }
+#legend strong, #datesNote strong, #extrasNote strong, #kbdNote strong { color: #a8c5ff; }
+#disclaimer { margin-top: 8px; padding-top: 8px; border-top: 1px solid rgba(138,172,255,0.14); font-size: 10.5px; line-height: 1.5; opacity: .72; }
+#disclaimer strong { color: #ffcf8a; }
+#credits { margin-top: 8px; padding-top: 8px; border-top: 1px solid rgba(138,172,255,0.14); font-size: 10.5px; line-height: 1.5; opacity: .6; }
+#credits a { color: #9fb8ee; text-decoration: none; }
+#credits a:hover { text-decoration: underline; }
+#about-footer { margin-top: 8px; padding-top: 8px; border-top: 1px solid rgba(138,172,255,0.14); font-size: 10.5px; line-height: 1.6; opacity: .65; }
+#about-footer a { color: #9fb8ee; text-decoration: none; }
+#about-footer a:hover { text-decoration: underline; }
+#tooltip {
+	position: fixed; pointer-events: none; z-index: 10;
+	padding: 8px 11px; max-width: 240px;
+	background: rgba(6, 10, 22, 0.94);
+	border: 1px solid rgba(150, 180, 255, 0.35);
+	border-radius: 10px;
+	font: 12px/1.45 -apple-system, "Segoe UI", system-ui, sans-serif;
+	color: #eef3ff; box-shadow: 0 10px 30px rgba(0,0,0,0.45);
+	opacity: 0; transition: opacity .12s ease;
+}
+#tooltip.show { opacity: 1; }
+#tooltip h2 { font-size: 13px; margin-bottom: 3px; }
+#tooltip .sub { opacity: .65; }
+#tooltip dl { display: grid; grid-template-columns: auto 1fr; gap: 1px 8px; margin-top: 5px; }
+#tooltip dt { opacity: .6; }
+#tooltip dd { text-align: right; font-variant-numeric: tabular-nums; }
+#tooltip .fact { margin-top: 6px; opacity: .85; }
+#tooltip .note { margin-top: 4px; font-size: 10.5px; opacity: .55; font-style: italic; }
+/* Floating fullscreen toggle, bottom-right (out of the panel's way). */
+#fullscreen {
+	position: fixed;
+	right: calc(14px + env(safe-area-inset-right, 0px));
+	bottom: calc(14px + env(safe-area-inset-bottom, 0px));
+	z-index: 9;
+	display: inline-flex; align-items: center; justify-content: center;
+	padding: 9px;
+	background: rgba(4, 8, 18, 0.7);
+	backdrop-filter: blur(8px);
+	border-radius: 10px;
+}
+#fullscreen[hidden] { display: none; } /* hidden where the Fullscreen API is unavailable (iPhone) */
+#fullscreen svg { display: block; }
+#loading {
+	position: fixed; inset: 0; display: flex; align-items: center; justify-content: center;
+	color: #9fb6ee; font: 14px system-ui; background: #01020a; z-index: 20;
+}
+#rangeWarn, #moonWarn {
+	position: fixed; top: 14px; left: 50%; z-index: 15; pointer-events: none;
+	transform: translateX(-50%) translateY(-8px);
+	padding: 9px 18px; border-radius: 10px; text-align: center; max-width: 92vw;
+	color: #fff; font: 600 13px/1.4 -apple-system, "Segoe UI", system-ui, sans-serif;
+	box-shadow: 0 8px 30px rgba(0, 0, 0, 0.45);
+	opacity: 0; transition: opacity .18s ease, transform .18s ease;
+}
+#rangeWarn { background: rgba(176, 28, 28, 0.94); border: 1px solid rgba(255, 130, 130, 0.7); }
+#moonWarn { top: 56px; background: rgba(150, 96, 12, 0.94); border: 1px solid rgba(240, 190, 110, 0.7); }
+#rangeWarn.show, #moonWarn.show { opacity: 1; transform: translateX(-50%) translateY(0); }
+
+/* Small screens: tighter panel and warnings. The panel also starts collapsed
+   (set in app.js) so the orrery, not the settings, is what a phone user sees. */
+@media (max-width: 600px) {
+	#ui, #aboutPanel {
+		top: 8px; left: 8px;
+		width: calc(100vw - 16px); max-width: 340px;
+		max-height: calc(100vh - 16px);
+		max-height: calc(100dvh - 16px);
+		padding: 10px 12px;
+	}
+	#rangeWarn, #moonWarn { font-size: 12px; padding: 7px 12px; }
+	#moonWarn { top: 52px; }
+}
