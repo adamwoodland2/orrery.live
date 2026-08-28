@@ -1,0 +1,18 @@
+# orrery.live
+
+> An interactive 3D solar system in the browser. Real planet positions computed from JPL orbital data, comets, spacecraft, a naked-eye star background with constellations, and a time machine covering 3000 BC to 3000 AD. Free, no account, no adverts.
+
+orrery.live shows where the planets are right now, or on any date you choose. Drag to orbit the view, scroll to zoom, and step time forwards or backwards to watch conjunctions, alignments and retrograde loops play out. It includes the eight planets and their major moons, dwarf planets, notable comets, and the trajectories of spacecraft such as the Voyagers and New Horizons. Famous planetary alignments and historical events are bookmarked so you can jump straight to them.
+
+Positions are computed client-side from JPL Horizons ephemeris data in the J2000 reference frame, with correct planetary spin axes. The star field is the HYG catalogue, and constellation lines are from d3-celestial.
+
+Technical: static site built on three.js, MIT licensed, installable PWA that works offline once loaded. Textures from Solar System Scope (CC BY 4.0); star catalogue CC BY-SA 4.0.
+
+## Links
+
+- [Orrery](https://orrery.live/): the app
+- [Sitemap](https://orrery.live/sitemap.xml)
+
+## Related
+
+- [Adam's Arcade](https://games.adamwoodland.com/): other free browser games and tools by the same author
