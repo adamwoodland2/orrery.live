@@ -1884,8 +1884,8 @@ fsBtn.addEventListener('click', toggleFullscreen);
 document.addEventListener('fullscreenchange', () => {
 	const on = !!document.fullscreenElement;
 	fsBtn.title = on ? 'Exit fullscreen (F)' : 'Fullscreen (F)';
-	document.getElementById('fsExpand').style.display = on ? 'none' : '';
-	document.getElementById('fsCompress').style.display = on ? '' : 'none';
+	document.getElementById('fsExpand').classList.toggle('is-hidden', on);
+	document.getElementById('fsCompress').classList.toggle('is-hidden', !on);
 });
 
 // ---- Reset everything back to the default look ------------------------
@@ -1916,7 +1916,7 @@ window.addEventListener('resize', () => {
 });
 
 // ---- Animation -------------------------------------------------------
-const clock = new THREE.Clock();
+const timer = new THREE.Timer(); // THREE.Clock is deprecated; Timer needs update() each frame
 const _MUP = new THREE.Vector3(0, 1, 0);
 const _md = new THREE.Vector3(), _my = new THREE.Vector3(), _mz = new THREE.Vector3();
 const _mbasis = new THREE.Matrix4();
@@ -2136,7 +2136,8 @@ function start() {
 	restoreSharedView(); // ?cam= viewpoint and ?follow= lock, once everything is placed
 	refreshDateUI();
 	renderer.setAnimationLoop(() => {
-		const delta = clock.getDelta();
+		timer.update();
+		const delta = timer.getDelta();
 		if (signedDps !== 0) { simDays += delta * signedDps; refreshDateUI(); refreshTooltip(); }
 		placeBodies();
 		updateFollow(delta);

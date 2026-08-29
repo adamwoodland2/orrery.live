@@ -263,3 +263,6 @@ canvas { display: block; }
 	#rangeWarn, #moonWarn { font-size: 12px; padding: 7px 12px; }
 	#moonWarn { top: 52px; }
 }
+
+/* Inline style attributes are blocked by the CSP; toggle this class instead. */
+.is-hidden { display: none; }
