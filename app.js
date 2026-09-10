@@ -766,7 +766,8 @@ function ensureGrid() {
 }
 
 // ---- Category filter (Sun is always visible) ------------------------
-const shown = { planet: true, dwarf: false, major: false, minor: false, comets: false, craft: false, labels: false, starlabels: false, trails: false, grid: false, milkyway: false, constellations: false };
+// Labels default ON (2026-09-12): planets alone read as anonymous dots to newcomers.
+const shown = { planet: true, dwarf: false, major: false, minor: false, comets: false, craft: false, labels: true, starlabels: false, trails: false, grid: false, milkyway: false, constellations: false };
 const BODY_CATS = ['planet', 'dwarf', 'major', 'minor', 'comets', 'craft']; // categories that map to bodies (backdrops/overlays excluded)
 const pickAll = [];
 function rebuildPickable() {
@@ -784,7 +785,9 @@ function applyFilter() {
 		b.orbitLine.visible = v;
 	}
 	for (const m of moonObjs) {
-		const v = shown[m.cls];
+		// A moon with its planet hidden is just an anonymous dot orbiting nothing
+		// (e.g. Charon with Dwarf planets off) - require the parent to be visible too.
+		const v = shown[m.cls] && shown[m.parentBody.cat];
 		m.mesh.visible = v;
 		m.orbitLine.visible = v;
 	}
@@ -1893,7 +1896,7 @@ document.addEventListener('fullscreenchange', () => {
 // (the Today button is right there for that). Also forgets saved settings.
 document.getElementById('resetView').addEventListener('click', () => {
 	try { localStorage.removeItem(STORE_KEY); } catch { /* storage unavailable */ }
-	Object.assign(shown, { planet: true, dwarf: false, major: false, minor: false, comets: false, craft: false, labels: false, starlabels: false, trails: false, grid: false, milkyway: false, constellations: false });
+	Object.assign(shown, { planet: true, dwarf: false, major: false, minor: false, comets: false, craft: false, labels: true, starlabels: false, trails: false, grid: false, milkyway: false, constellations: false });
 	syncFilterUI();
 	applyFilter();
 	brightSlider.value = 13; applyBrightness(13);
@@ -2158,3 +2161,6 @@ start();
 if ('serviceWorker' in navigator && (location.protocol === 'https:' || location.hostname === 'localhost')) {
 	navigator.serviceWorker.register('./sw.js').catch(() => { /* PWA is optional — the site works without it */ });
 }
+
+// Headless-test hook (same convention as the other fleet sites).
+window.__ORRERY = { bodies, moonObjs, cometObjs, craftObjs, shown };
