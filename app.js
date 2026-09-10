@@ -1120,7 +1120,26 @@ function setCollapsed(collapsed) {
 	collapseBtn.setAttribute('aria-expanded', String(!collapsed));
 	collapseBtn.title = collapsed ? 'Expand panel' : 'Collapse panel';
 }
-collapseBtn.addEventListener('click', () => { setCollapsed(!ui.classList.contains('collapsed')); saveSettings(); });
+collapseBtn.addEventListener('click', () => { setCollapsed(!ui.classList.contains('collapsed')); saveSettings(); updateMiniDate(); });
+// Phones: tapping the scene behind the open panel minimises it (the arrow still works too).
+const phoneMQ = window.matchMedia('(max-width: 600px)');
+document.addEventListener('pointerdown', (e) => {
+	if (!phoneMQ.matches) return;
+	if (ui.classList.contains('collapsed')) return;
+	if (e.target.closest('#ui, #aboutPanel')) return;
+	setCollapsed(true);
+	saveSettings();
+	updateMiniDate();
+});
+// Phones, panel minimised, time running: a whisper of a date readout below the panel
+// so you can see where you have got to. Hidden while paused, expanded, or on desktop
+// (the desktop panel already shows the date).
+const miniDate = document.getElementById('miniDate');
+function updateMiniDate() {
+	const on = signedDps !== 0 && ui.classList.contains('collapsed');
+	if (on) miniDate.textContent = dateValue.textContent;
+	miniDate.hidden = !on;
+}
 // Saved preference wins; otherwise phones start collapsed so the orrery,
 // not the panel, is the first thing seen.
 setCollapsed(stored && typeof stored.collapsed === 'boolean'
@@ -1233,6 +1252,7 @@ function refreshDateUI() {
 	const out = y < -2999 || y > 3000;
 	if (out) rangeWarn.textContent = `⚠ Approximate positions — ${y < -2999 ? 'before 3000 BC' : 'after 3000 AD'} is outside the JPL data range (3000 BC – 3000 AD)`;
 	rangeWarn.classList.toggle('show', out);
+	updateMiniDate();
 	updateMoonWarn();
 }
 // Major-moon positions are calibrated for the modern era; warn if the date is
@@ -1249,7 +1269,7 @@ function readSpeed() {
 		v = 0;
 		speedSlider.value = 0;
 	}
-	if (v === 0) { signedDps = 0; speedValue.textContent = '❙ Paused'; return; }
+	if (v === 0) { signedDps = 0; speedValue.textContent = '❙ Paused'; updateMiniDate(); return; }
 	const p = (Math.abs(v) - DEAD) / (100 - DEAD);             // 0..1 outside dead zone
 	const dps = MIN_DPS * Math.pow(MAX_DPS / MIN_DPS, p);      // log-scaled magnitude
 	signedDps = Math.sign(v) * dps;

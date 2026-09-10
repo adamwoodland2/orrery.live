@@ -250,6 +250,26 @@ canvas { display: block; }
 #moonWarn { top: 56px; background: rgba(150, 96, 12, 0.94); border: 1px solid rgba(240, 190, 110, 0.7); }
 #rangeWarn.show, #moonWarn.show { opacity: 1; transform: translateX(-50%) translateY(0); }
 
+/* Phones only: subtle date/time under the minimised panel while time is running
+   (desktop's open panel already shows the date; app.js gates on collapsed+playing). */
+#miniDate { display: none; }
+@media (max-width: 600px) {
+	#miniDate:not([hidden]) {
+		display: block;
+		position: fixed;
+		top: 56px; left: 8px;
+		z-index: 8;
+		font: 11px/1.4 -apple-system, "Segoe UI", system-ui, sans-serif;
+		color: rgba(237, 242, 255, 0.72);
+		background: rgba(4, 8, 18, 0.55);
+		border: 1px solid rgba(138, 172, 255, 0.14);
+		border-radius: 8px;
+		padding: 3px 9px;
+		pointer-events: none;
+		backdrop-filter: blur(6px);
+	}
+}
+
 /* Small screens: tighter panel and warnings. The panel also starts collapsed
    (set in app.js) so the orrery, not the settings, is what a phone user sees. */
 @media (max-width: 600px) {
