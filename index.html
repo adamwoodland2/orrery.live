@@ -6,7 +6,7 @@
 
 <!-- Primary SEO -->
 <title>Orrery.live - Interactive Online Orrery - a 3D Solar System</title>
-<meta name="description" content="A free online orrery - an interactive digital model of the solar system. Real planet positions from JPL orbital data, a true naked-eye star background, and a time machine to jump to any date from 3000 BC to 3000 AD - including famous planetary alignments.">
+<meta name="description" content="A free online orrery - an interactive digital solar system model. Real planet positions from JPL orbital data, a true naked-eye star background, and a time machine to jump to any date from 3000 BC to 3000 AD - including famous planetary alignments.">
 <meta name="keywords" content="orrery, solar system, planets, planetary alignment, 3D, astronomy, JPL, ephemeris, space, interactive, three.js">
 <meta name="author" content="Adam Woodland">
 <meta name="robots" content="index, follow">
@@ -44,7 +44,7 @@
   "name": "Orrery.live",
   "alternateName": "Solar System View",
   "url": "https://orrery.live/",
-  "description": "A free online orrery - an interactive digital model of the solar system. Real planet positions from JPL orbital data, a true naked-eye star background, and a time machine to jump to any date from 3000 BC to 3000 AD - including famous planetary alignments.",
+  "description": "A free online orrery - an interactive digital solar system model. Real planet positions from JPL orbital data, a true naked-eye star background, and a time machine to jump to any date from 3000 BC to 3000 AD - including famous planetary alignments.",
   "applicationCategory": "EducationalApplication",
   "applicationSubCategory": "Astronomy",
   "operatingSystem": "Web Browser",
@@ -89,6 +89,14 @@
     },
     {
       "@type": "Question",
+      "name": "Where are the planets in tonight's sky?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Hover or tap any planet and its tooltip describes the planetary sky as seen from Earth: whether the planet is an evening-sky or morning-sky object right now, up most of the night, or lost in the Sun's glare - plus its distance and light-travel time from Earth and its next opposition or best viewing date."
+      }
+    },
+    {
+      "@type": "Question",
       "name": "How are the planet positions calculated?",
       "acceptedAnswer": {
         "@type": "Answer",
@@ -124,7 +132,7 @@
       "name": "Why are the planet sizes and orbits not to scale?",
       "acceptedAnswer": {
         "@type": "Answer",
-        "text": "A true-scale solar system would leave the planets as invisible specks separated by huge empty gaps. Orrery.live keeps the planets' positions and orbital geometry real but scales body sizes and orbit spacing for visibility, the standard compromise used by physical orreries. If you want to see reality, the Size and Orbits sliders morph the model to true scale relative to the Sun — and show just how empty the solar system really is."
+        "text": "A true-scale solar system model would leave the planets as invisible specks separated by huge empty gaps. Orrery.live keeps the planets' positions and orbital geometry real but scales body sizes and orbit spacing for visibility, the standard compromise used by physical orreries. If you want to see reality, the Size and Orbits sliders morph the model to true scale relative to the Sun — and show just how empty the solar system really is."
       }
     },
     {
@@ -252,8 +260,8 @@
 	     so search engines and assistive tech see real text behind the WebGL canvas. -->
 	<section id="seo-content" class="sr-only">
 		<h2>A free online orrery - an interactive 3D solar system</h2>
-		<p>Orrery.live is a free online orrery — an interactive digital model of the solar
-		system that you explore in your web browser. Every planet is placed in its true
+		<p>Orrery.live is a free online orrery — an interactive digital solar system
+		model that you explore in your web browser. Every planet is placed in its true
 		position around the Sun using JPL orbital elements, so the view shows the real
 		arrangement of Mercury, Venus, Earth, Mars, Jupiter, Saturn, Uranus, Neptune and
 		Pluto for any date you choose. Drag to orbit the camera, scroll or pinch to zoom,
@@ -273,7 +281,9 @@
 		database in their true positions, with optional constellation figures and named
 		bright stars. Planet positions come from real orbital data, while body sizes and
 		orbit spacing are scaled up for visibility — the same compromise used by
-		physical orreries.</p>
+		physical orreries. The result is a live picture of the planetary sky: which
+		planets are up tonight, roughly where to look for them, and when each next
+		reaches opposition or its best viewing date.</p>
 
 		<h2>Comets, spacecraft and sky events</h2>
 		<p>Follow Halley's Comet, Comet Encke, Hale–Bopp and Rosetta's comet 67P on
@@ -290,6 +300,12 @@
 		comes from Charles Boyle, 4th Earl of Orrery, for whom one of the first clockwork
 		models was made around 1712. Orrery.live is a digital orrery - a free online,
 		interactive 3D version you can explore in your browser.</p>
+
+		<h3>Where are the planets in tonight's sky?</h3>
+		<p>Hover or tap any planet and its tooltip describes the planetary sky as seen
+		from Earth: whether the planet is an evening-sky or morning-sky object right
+		now, up most of the night, or lost in the Sun's glare - plus its distance and
+		light-travel time from Earth and its next opposition or best viewing date.</p>
 
 		<h3>How are the planet positions calculated?</h3>
 		<p>Each planet's position is computed from JPL orbital elements, so the planets
@@ -311,7 +327,7 @@
 		true positions on the sky — the real night sky, not a decorative starfield.</p>
 
 		<h3>Why are the planet sizes and orbits not to scale?</h3>
-		<p>A true-scale solar system would leave the planets as invisible specks separated
+		<p>A true-scale solar system model would leave the planets as invisible specks separated
 		by huge empty gaps. Orrery.live keeps positions and orbital geometry real but
 		scales body sizes and orbit spacing for visibility — and the Size and Orbits
 		sliders let you morph the model to true scale to see the emptiness for yourself.</p>
