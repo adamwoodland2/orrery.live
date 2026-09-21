@@ -189,7 +189,9 @@ function poleQuat(p) { // rotate scene-up onto the pole; twist (phase) is arbitr
 }
 
 function dateToDays(date) { return date.getTime() / 86400000 + 2440587.5 - J2000; }
-function daysToDate(days) { return new Date((days + J2000 - 2440587.5) * 86400000); }
+// Rounded to whole milliseconds: the float round-trip otherwise lands a
+// picked 21:47 at 21:46:59.999 and the label reads a minute early.
+function daysToDate(days) { return new Date(Math.round((days + J2000 - 2440587.5) * 86400000)); }
 
 // Geocentric Moon (km, J2000 ecliptic) from the Astronomical Almanac's
 // low-precision lunar formulae (ecliptic of date), precessed to J2000 so it
@@ -1313,7 +1315,7 @@ function refreshDateUI() {
 	if (document.activeElement !== dateInput && document.activeElement !== eraSel) {
 		const civil = y <= 0 ? 1 - y : y;
 		if (civil >= 1 && civil <= 9999) {
-			dateInput.value = `${String(civil).padStart(4, '0')}-${String(d.getUTCMonth() + 1).padStart(2, '0')}-${String(d.getUTCDate()).padStart(2, '0')}`;
+			dateInput.value = inputValueFor(d, dateInput.type === 'datetime-local');
 			eraSel.value = y <= 0 ? 'BC' : 'AD';
 		} else {
 			dateInput.value = '';
@@ -1402,12 +1404,32 @@ shareBtn.addEventListener('click', async () => {
 });
 // Combine the date picker (civil year 1–9999) with the AD/BC selector so the
 // full 3000 BC – 3000 AD range is reachable despite the native year limit.
+// The field shows just the date at rest (the time is in the bar above it) but
+// becomes a date+time control while it has focus, so the time can be set in
+// the same place. Values are "YYYY-MM-DD" or "YYYY-MM-DDTHH:MM", read as UTC to
+// match the label; a date-only value keeps the current time of day.
+function inputValueFor(d, withTime) {
+	const p2 = (n) => String(n).padStart(2, '0');
+	const y = d.getUTCFullYear(), civil = y <= 0 ? 1 - y : y;
+	const date = `${String(civil).padStart(4, '0')}-${p2(d.getUTCMonth() + 1)}-${p2(d.getUTCDate())}`;
+	return withTime ? `${date}T${p2(d.getUTCHours())}:${p2(d.getUTCMinutes())}` : date;
+}
+function setDateInputMode(withTime) {
+	const cur = daysToDate(simDays), y = cur.getUTCFullYear(), civil = y <= 0 ? 1 - y : y;
+	dateInput.type = withTime ? 'datetime-local' : 'date'; // changing type drops the value…
+	dateInput.value = civil >= 1 && civil <= 9999 ? inputValueFor(cur, withTime) : ''; // …so rewrite it
+}
+dateInput.addEventListener('focus', () => { if (dateInput.type !== 'datetime-local') setDateInputMode(true); });
+dateInput.addEventListener('blur', () => setDateInputMode(false));
 function applyDateInput() {
 	if (!dateInput.value) return;
-	const [civil, mm, dd] = dateInput.value.split('-').map(Number);
+	const now = daysToDate(simDays);
+	const [datePart, timePart = `${now.getUTCHours()}:${now.getUTCMinutes()}`] = dateInput.value.split('T');
+	const [civil, mm, dd] = datePart.split('-').map(Number);
+	const [hh, mi] = timePart.split(':').map(Number);
 	const astroYear = eraSel.value === 'BC' ? 1 - civil : civil;
-	const d = new Date(Date.UTC(2000, mm - 1, dd, 12)); // noon UTC base…
-	d.setUTCFullYear(astroYear);                        // …then the real year (handles 0–99 and BC)
+	const d = new Date(Date.UTC(2000, mm - 1, dd, hh, mi)); // UTC base…
+	d.setUTCFullYear(astroYear);                             // …then the real year (handles 0–99 and BC)
 	pausePlayback();
 	simDays = dateToDays(d);
 	refreshDateUI();
