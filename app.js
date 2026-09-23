@@ -608,7 +608,7 @@ const cometsData = [
 	// Halley: the two-body period from `a` (75.3 yr) would put the next perihelion
 	// ~8 weeks early; planetary perturbations stretch this return. Its period is
 	// pinned to JPL's 1986-02-09 → 2061-07-28 interval so the model, the tooltip
-	// and the Upcoming menu agree on the date.
+	// and the events menu agree on the date.
 	{ name: "Halley's Comet", desig: '1P/Halley', a: 17.834, e: 0.96714, inc: 162.262, node: 58.42, argp: 111.33, tpJD: 2446470.95, periodD: 27563.05, size: 0.09, color: '#c7dcec',
 	  fact: 'The famous once-in-a-lifetime comet, returning every ~76 years; recorded since at least 240 BC and embroidered into the Bayeux Tapestry. Next perihelion: 2061.' },
 	{ name: 'Comet Encke', desig: '2P/Encke', a: 2.215, e: 0.8483, inc: 11.78, node: 334.57, argp: 186.54, tpJD: 2460239.5, size: 0.06, color: '#b8c4c9',
@@ -1533,12 +1533,15 @@ function computeUpcoming() {
 		const ge = nextElongation(bodyByName[nm].planet.el, start, nm === 'Venus' ? 40 : 15);
 		if (ge) out.push({ days: ge.days, show: ['planet'], note: `${nm}: greatest ${ge.east ? 'evening' : 'morning'} elongation` });
 	}
-	// Halley's next perihelion, from the model's own elements.
-	const h = cometsData[0];
-	const k = Math.ceil((start - h.tpDays) / h.periodD);
-	out.push({ days: h.tpDays + k * h.periodD, show: ['planet', 'comets'], note: "Halley's Comet at perihelion" });
 	out.sort((a, b) => a.days - b.days);
 	return out;
+}
+// Halley's next perihelion, from the model's own elements. Decades away, so
+// it files by era alongside the curated list rather than under Upcoming.
+function nextHalley() {
+	const h = cometsData[0];
+	const k = Math.ceil((todayDays() - h.tpDays) / h.periodD);
+	return { days: h.tpDays + k * h.periodD, show: ['planet', 'comets'], note: "Halley's Comet at perihelion" };
 }
 
 // Group the menu: computed Upcoming first, then the curated list by era.
@@ -1547,7 +1550,7 @@ function computeUpcoming() {
 const eventEra = (days) => { const y = 2000 + days / 365.25; return y < 1900 ? 'Ancient' : y <= 2100 ? 'Modern era' : 'Future'; };
 const MENU = [
 	...computeUpcoming().map(ev => ({ ...ev, group: 'Upcoming' })),
-	...EVENTS.map(ev => ({ ...ev, group: eventEra(ev.days) }))
+	...[...EVENTS, nextHalley()].sort((a, b) => a.days - b.days).map(ev => ({ ...ev, group: eventEra(ev.days) }))
 ];
 let eventGroup = null;
 for (const ev of MENU) {
