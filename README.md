@@ -16,6 +16,9 @@ comets, spacecraft, a naked-eye star background with constellations, and a time 
 - Bookmarked historical events and famous planetary alignments to jump straight to.
 - A true star field with constellation lines behind it all.
 - Installable as an app and usable offline once loaded.
+- Two text guides that share the model: [/now/](https://orrery.live/now/) (where every planet is
+  right now) and [/planetary-alignment/](https://orrery.live/planetary-alignment/) (planet parade
+  dates, past and future).
 
 ## How it works
 
@@ -24,6 +27,9 @@ comets, spacecraft, a naked-eye star background with constellations, and a time 
   `spacecraft.js`. No backend.
 - Positions are computed client-side in the J2000 reference frame from NASA/JPL Horizons
   ephemeris data, with correct planetary spin axes; the time machine is just a change of epoch.
+- The guide pages use `guide-orbits.js`, a copy of the planet elements and Kepler solver generated
+  from `app.js`, plus `guide-parades.js` (parade dates), `guide-ui.js` and `guide.css`; their live
+  sections are pre-rendered into the HTML at publish time and refreshed by JavaScript.
 - The star background is the HYG catalogue; constellation lines derive from d3-celestial;
   planet and sky textures are from Solar System Scope.
 - Installable PWA: `manifest.json` and a service worker (`sw.js`) — code and navigations are

@@ -1,0 +1,127 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Where are the planets right now? Live positions of every planet - Orrery.live</title>
+<meta name="description" content="Live positions of all the planets right now: distance from the Sun and from Earth, light time, evening or morning sky, retrograde or not, and the next opposition or best viewing date - computed from JPL orbital data, with a top-down map of the solar system today.">
+<meta name="robots" content="index, follow">
+<meta name="author" content="Adam Woodland">
+<meta name="theme-color" content="#01020a">
+<link rel="canonical" href="https://orrery.live/now/">
+<link rel="icon" href="/favicon.svg" type="image/svg+xml">
+<link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
+<meta property="og:type" content="website">
+<meta property="og:url" content="https://orrery.live/now/">
+<meta property="og:title" content="Where are the planets right now? Live positions of every planet">
+<meta property="og:description" content="Distance from the Sun and Earth, light time, evening or morning sky, retrograde or not, and the next opposition for every planet - live, from JPL orbital data.">
+<meta property="og:site_name" content="Orrery.live">
+<meta property="og:image" content="https://orrery.live/solar-system.svg">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Where are the planets right now?">
+<meta name="twitter:description" content="Live positions of every planet: distances, light time, evening or morning sky, retrograde motion and the next opposition.">
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@graph": [
+    {
+      "@type": "BreadcrumbList",
+      "itemListElement": [
+        { "@type": "ListItem", "position": 1, "name": "Orrery.live", "item": "https://orrery.live/" },
+        { "@type": "ListItem", "position": 2, "name": "Where are the planets right now?", "item": "https://orrery.live/now/" }
+      ]
+    },
+    {
+      "@type": "WebPage",
+      "@id": "https://orrery.live/now/",
+      "url": "https://orrery.live/now/",
+      "name": "Where are the planets right now? Live positions of every planet",
+      "description": "Live positions of all the planets right now: distance from the Sun and from Earth, light time, evening or morning sky, retrograde or not, and the next opposition or best viewing date, computed from JPL orbital data.",
+      "isPartOf": { "@type": "WebSite", "name": "Orrery.live", "url": "https://orrery.live/" },
+      "author": { "@type": "Person", "name": "Adam Woodland" },
+      "inLanguage": "en"
+    },
+    {
+      "@type": "FAQPage",
+      "mainEntity": [
+        {
+          "@type": "Question",
+          "name": "Which planets can I see tonight?",
+          "acceptedAnswer": { "@type": "Answer", "text": "The summary at the top of this page names them for the current moment. Planets listed under the evening sky are east of the Sun, so they are above the horizon after sunset, in the general direction the Sun went down; those under the morning sky rise before the Sun. A planet more than 150 degrees from the Sun is near opposition and up most of the night. Mercury, Venus, Mars, Jupiter and Saturn are naked-eye objects; Uranus needs binoculars and Neptune a telescope." }
+        },
+        {
+          "@type": "Question",
+          "name": "What does retrograde mean in the table?",
+          "acceptedAnswer": { "@type": "Answer", "text": "Apparent retrograde motion: for a few weeks or months around opposition, a planet appears to drift backwards (westward) against the stars because Earth is overtaking it on the inside, or, for Mercury and Venus, because they are overtaking Earth. The planet never actually reverses; it is a line-of-sight effect. The table checks the planet's geocentric ecliptic longitude a day either side of now. It has nothing to do with astrology." }
+        },
+        {
+          "@type": "Question",
+          "name": "How accurate are these positions?",
+          "acceptedAnswer": { "@type": "Answer", "text": "They are computed from JPL's long-range Keplerian elements (the Standish tables that cover 3000 BC to 3000 AD), the same data behind the 3D orrery, which are good to a few arcminutes for the present day. The figures are geometric positions at the moment shown (UTC): light-travel time and aberration are not applied, and distances are centre to centre. They are not a substitute for a professional ephemeris such as JPL Horizons, and they are not a horoscope." }
+        },
+        {
+          "@type": "Question",
+          "name": "Can I see where the planets were, or will be, on another date?",
+          "acceptedAnswer": { "@type": "Answer", "text": "Yes. The 3D orrery at orrery.live lets you set any date and time from 3000 BC to 3000 AD, play time forwards or backwards, and follow any planet. Its Jump to a notable alignment menu also goes straight to famous planetary alignments and planet parades." }
+        }
+      ]
+    }
+  ]
+}
+</script>
+<link rel="stylesheet" href="/guide.css">
+</head>
+<body>
+<div class="wrap">
+<header class="site">
+	<a class="brand" href="/">☉ Orrery.live</a>
+	<nav aria-label="Guides"><a href="/">3D orrery</a><a href="/now/" aria-current="page">Planets right now</a><a href="/planetary-alignment/">Alignments &amp; parades</a></nav>
+</header>
+<main>
+	<h1>Where are the planets right now?</h1>
+	<p class="lead">The solar system at this moment, <span id="stamp" class="now-stamp"><!-- snap:stamp -->23 Sept 2026, 21:37 UTC<!-- /snap:stamp --></span>. Everything below is computed in your browser from JPL orbital elements — the same data behind the 3D orrery — and refreshes every minute.</p>
+	<p id="summary"><!-- snap:summary -->Evening sky after sunset: Mercury, Venus and Pluto. Morning sky before sunrise: Mars, Jupiter and Uranus. Up most of the night: Saturn and Neptune. Lost in the Sun’s glare: none. (Uranus needs binoculars; Neptune and Pluto a telescope.)<!-- /snap:summary --></p>
+	<a class="cta" href="/">Open the live 3D orrery</a>
+
+	<h2>Every planet right now</h2>
+	<div class="tablewrap">
+		<table class="stack">
+			<thead>
+				<tr><th scope="col">Planet</th><th scope="col">From the Sun</th><th scope="col">From Earth</th><th scope="col">Light time</th><th scope="col">In the sky</th><th scope="col">Motion</th><th scope="col">Next</th><th scope="col"></th></tr>
+			</thead>
+			<tbody id="planetRows"><!-- snap:rows --><tr><th scope="row">Mercury</th><td class="num" data-label="From the Sun">0.47 AU</td><td class="num" data-label="From Earth">1.26 AU<span class="sub">188 million km</span></td><td class="num" data-label="Light time">10.5 min</td><td data-label="In the sky">evening sky<span class="sub">20° east of the Sun</span></td><td data-label="Motion">direct</td><td class="next" data-label="Next">Best evening view 12 Oct 2026</td><td class="act"><a href="/?follow=Mercury" title="Open the 3D orrery following Mercury">3D view</a></td></tr><tr><th scope="row">Venus</th><td class="num" data-label="From the Sun">0.73 AU</td><td class="num" data-label="From Earth">0.39 AU<span class="sub">58 million km</span></td><td class="num" data-label="Light time">3.2 min</td><td data-label="In the sky">evening sky<span class="sub">36° east of the Sun</span></td><td data-label="Motion">direct</td><td class="next" data-label="Next">Best morning view 3 Jan 2027</td><td class="act"><a href="/?follow=Venus" title="Open the 3D orrery following Venus">3D view</a></td></tr><tr><th scope="row">Mars</th><td class="num" data-label="From the Sun">1.55 AU</td><td class="num" data-label="From Earth">1.71 AU<span class="sub">256 million km</span></td><td class="num" data-label="Light time">14.2 min</td><td data-label="In the sky">morning sky<span class="sub">63° west of the Sun</span></td><td data-label="Motion">direct</td><td class="next" data-label="Next">Opposition 20 Feb 2027</td><td class="act"><a href="/?follow=Mars" title="Open the 3D orrery following Mars">3D view</a></td></tr><tr><th scope="row">Jupiter</th><td class="num" data-label="From the Sun">5.30 AU</td><td class="num" data-label="From Earth">6.00 AU<span class="sub">897 million km</span></td><td class="num" data-label="Light time">49.9 min</td><td data-label="In the sky">morning sky<span class="sub">43° west of the Sun</span></td><td data-label="Motion">direct</td><td class="next" data-label="Next">Opposition 11 Feb 2027</td><td class="act"><a href="/?follow=Jupiter" title="Open the 3D orrery following Jupiter">3D view</a></td></tr><tr><th scope="row">Saturn</th><td class="num" data-label="From the Sun">9.44 AU</td><td class="num" data-label="From Earth">8.46 AU<span class="sub">1,265 million km</span></td><td class="num" data-label="Light time">70.3 min</td><td data-label="In the sky">up most of the night<span class="sub">169° west of the Sun</span></td><td class="retro" data-label="Motion">retrograde</td><td class="next" data-label="Next">Opposition 4 Oct 2026</td><td class="act"><a href="/?follow=Saturn" title="Open the 3D orrery following Saturn">3D view</a></td></tr><tr><th scope="row">Uranus</th><td class="num" data-label="From the Sun">19.45 AU</td><td class="num" data-label="From Earth">19.01 AU<span class="sub">2,843 million km</span></td><td class="num" data-label="Light time">2.63 h</td><td data-label="In the sky">morning sky<span class="sub">115° west of the Sun</span></td><td class="retro" data-label="Motion">retrograde</td><td class="next" data-label="Next">Opposition 26 Nov 2026</td><td class="act"><a href="/?follow=Uranus" title="Open the 3D orrery following Uranus">3D view</a></td></tr><tr><th scope="row">Neptune</th><td class="num" data-label="From the Sun">29.87 AU</td><td class="num" data-label="From Earth">28.87 AU<span class="sub">4,319 million km</span></td><td class="num" data-label="Light time">4.00 h</td><td data-label="In the sky">up most of the night<span class="sub">178° west of the Sun</span></td><td class="retro" data-label="Motion">retrograde</td><td class="next" data-label="Next">Opposition 26 Sept 2026</td><td class="act"><a href="/?follow=Neptune" title="Open the 3D orrery following Neptune">3D view</a></td></tr><tr><th scope="row">Pluto<span class="sub">dwarf planet</span></th><td class="num" data-label="From the Sun">35.61 AU</td><td class="num" data-label="From Earth">35.07 AU<span class="sub">5,246 million km</span></td><td class="num" data-label="Light time">4.86 h</td><td data-label="In the sky">evening sky<span class="sub">122° east of the Sun</span></td><td class="retro" data-label="Motion">retrograde</td><td class="next" data-label="Next">Opposition 29 Jul 2027</td><td class="act"><a href="/?follow=Pluto" title="Open the 3D orrery following Pluto">3D view</a></td></tr><!-- /snap:rows --></tbody>
+		</table>
+	</div>
+	<p class="muted">Distances are centre to centre. “Evening sky” means the planet is east of the Sun and sets after it; “morning sky” means it rises before the Sun. Within 15° of the Sun a planet is lost in the glare; beyond 150° it is near opposition and up most of the night. Without JavaScript the figures are those from when this page was published.</p>
+
+	<h2>The solar system from above, today</h2>
+	<svg class="topdown" id="topdown" viewBox="-70 0 740 600" role="img" aria-labelledby="topdownTitle"><title id="topdownTitle">Top-down map of where the planets are today</title><!-- snap:map --><circle cx="300" cy="300" r="44.7" fill="none" stroke="rgba(138,172,255,0.28)"></circle><circle cx="300" cy="300" r="63.6" fill="none" stroke="rgba(138,172,255,0.28)"></circle><circle cx="300" cy="300" r="84.2" fill="none" stroke="rgba(138,172,255,0.28)"></circle><circle cx="300" cy="300" r="104.8" fill="none" stroke="rgba(138,172,255,0.28)"></circle><circle cx="300" cy="300" r="152.9" fill="none" stroke="rgba(138,172,255,0.28)"></circle><circle cx="300" cy="300" r="195.8" fill="none" stroke="rgba(138,172,255,0.28)"></circle><circle cx="300" cy="300" r="228.5" fill="none" stroke="rgba(138,172,255,0.28)"></circle><circle cx="300" cy="300" r="254.2" fill="none" stroke="rgba(138,172,255,0.28)"></circle><circle cx="300" cy="300" r="280.0" fill="none" stroke="rgba(138,172,255,0.28)"></circle><circle cx="300" cy="300" r="9" fill="#ffd166"></circle><circle cx="283.1" cy="341.3" r="4.5" fill="#b9b9b9"></circle><text x="274.1" y="345.3" font-size="13" fill="#edf2ff" text-anchor="end">Mercury</text><circle cx="360.5" cy="319.4" r="4.5" fill="#efd39f"></circle><text x="369.5" y="323.4" font-size="13" fill="#edf2ff" text-anchor="start">Venus</text><circle cx="384.2" cy="299.3" r="4.5" fill="#6fa8ff"></circle><text x="393.2" y="303.3" font-size="13" fill="#edf2ff" text-anchor="start">Earth</text><circle cx="315.1" cy="196.3" r="4.5" fill="#e8714d"></circle><text x="324.1" y="200.3" font-size="13" fill="#edf2ff" text-anchor="start">Mars</text><circle cx="200.6" cy="183.9" r="6" fill="#dbb48a"></circle><text x="191.6" y="187.9" font-size="13" fill="#edf2ff" text-anchor="end">Jupiter</text><circle cx="492.6" cy="264.4" r="6" fill="#ead7a4"></circle><text x="501.6" y="268.4" font-size="13" fill="#edf2ff" text-anchor="start">Saturn</text><circle cx="405.0" cy="97.1" r="4.5" fill="#9fd9e2"></circle><text x="414.0" y="101.1" font-size="13" fill="#edf2ff" text-anchor="start">Uranus</text><circle cx="554.0" cy="288.6" r="4.5" fill="#6d8dff"></circle><text x="563.0" y="292.6" font-size="13" fill="#edf2ff" text-anchor="start">Neptune</text><circle cx="457.4" cy="531.6" r="4.5" fill="#cdbcaa"></circle><text x="466.4" y="535.6" font-size="13" fill="#edf2ff" text-anchor="start">Pluto</text><text x="8" y="592" font-size="11" fill="#9fb0d8">Top-down view, 23 Sept 2026. Planets move anticlockwise; 0° longitude is to the right.</text><!-- /snap:map --></svg>
+	<p class="muted">Looking down on the plane of the solar system from the north: the planets move anticlockwise, and the vernal equinox (0° longitude) is to the right. Orbit spacing is compressed exactly as in the orrery’s compact view; the positions along the orbits are real. <a href="/">Open the 3D orrery</a> to spin this around, zoom in, and run time forwards or back.</p>
+
+	<h2>Is there a planetary alignment right now?</h2>
+	<p id="parade"><!-- snap:parade --><span>The five naked-eye planets (Mercury, Venus, Mars, Jupiter and Saturn) are spread across 205° of sky right now, so there is no planet parade at the moment. <span>The next one is on <a href="/planetary-alignment/">14 Nov 2026</a>: Mercury, Venus, Mars and Jupiter in the morning sky before sunrise.</span></span><!-- /snap:parade --></p>
+	<p>A “planet parade” is several planets in the same part of the sky at once, as seen from Earth. <a href="/planetary-alignment/">The full list of upcoming and past planet parades</a> explains what they are and links each one into the orrery.</p>
+
+	<h2>How this is computed</h2>
+	<p>Each planet’s position comes from JPL’s long-range Keplerian elements (the Standish tables, fitted for 3000 BC – 3000 AD), solved in your browser at the instant shown. That is the same data and the same solver as the 3D orrery, so the two always agree. Positions are geometric: light-travel time and aberration are not applied, and the figures are good to a few arcminutes for the present day. Times are UTC.</p>
+	<p>These are astronomical positions, not a horoscope: no signs, no houses, no predictions. For a professional-grade ephemeris use <a href="https://ssd.jpl.nasa.gov/horizons/" rel="noopener">JPL Horizons</a>.</p>
+
+	<section class="faq">
+		<h2>Questions</h2>
+		<h3>Which planets can I see tonight?</h3>
+		<p>The summary at the top names them for the current moment. Planets listed under the evening sky are east of the Sun, so they are above the horizon after sunset, in the general direction the Sun went down; those under the morning sky rise before the Sun. A planet more than 150° from the Sun is near opposition and up most of the night. Mercury, Venus, Mars, Jupiter and Saturn are naked-eye objects; Uranus needs binoculars and Neptune a telescope.</p>
+		<h3>What does “retrograde” mean in the table?</h3>
+		<p>Apparent retrograde motion: for a few weeks or months around opposition a planet appears to drift backwards (westward) against the stars, because Earth is overtaking it on the inside — or, for Mercury and Venus, because they are overtaking Earth. The planet never actually reverses; it is a line-of-sight effect. The table checks each planet’s geocentric longitude a day either side of now. It has nothing to do with astrology.</p>
+		<h3>How accurate are these positions?</h3>
+		<p>Good to a few arcminutes for the present day, drifting to a fraction of a degree at the ends of the 3000 BC – 3000 AD range. Distances are centre to centre. This page is an educational tool, not a navigational or scientific reference.</p>
+		<h3>Can I see where the planets were, or will be, on another date?</h3>
+		<p>Yes — the <a href="/">3D orrery</a> takes any date and time from 3000 BC to 3000 AD, plays time forwards or backwards, follows any planet, and jumps straight to famous alignments from its events menu.</p>
+	</section>
+</main>
+<footer class="site">
+	<p>Part of <a href="/">Orrery.live</a>, a free interactive 3D solar system. Planet data: JPL/Standish Keplerian elements. Built by Adam Woodland with the assistance of AI (Anthropic Claude); code under the <a href="/LICENSE">MIT licence</a>. Contact: <a href="mailto:adam@orrery.live">adam@orrery.live</a>.</p>
+</footer>
+</div>
+<script type="module" src="/guide-now.js"></script>
+</body>
+</html>

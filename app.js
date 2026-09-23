@@ -1998,6 +1998,8 @@ function restoreSharedView() {
 			camera.position.set(a[0], a[1], a[2]);
 			controls.target.set(a[3], a[4], a[5]);
 		}
+	} else if (params.get('view') === 'top') {
+		flyTopDown(); // guide-page links (/planetary-alignment/): alignments read best from above
 	}
 	const followParam = params.get('follow');
 	if (followParam) {
@@ -2314,4 +2316,4 @@ if ('serviceWorker' in navigator && (location.protocol === 'https:' || location.
 }
 
 // Headless-test hook (same convention as the other fleet sites).
-window.__ORRERY = { bodies, moonObjs, cometObjs, craftObjs, shown };
+window.__ORRERY = { bodies, moonObjs, cometObjs, craftObjs, shown, camera };
