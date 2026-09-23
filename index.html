@@ -116,7 +116,7 @@
       "name": "Can I see planetary alignments, planet parades and conjunctions?",
       "acceptedAnswer": {
         "@type": "Answer",
-        "text": "Yes. The 'Jump to a notable alignment' menu lets you instantly travel to famous planetary alignments - popularly called planet parades - and conjunctions, from tight five- and six-planet clusters to the moments the planets spread evenly around the Sun. You can also set any date yourself to check an alignment."
+        "text": "Yes. The 'Jump to a notable alignment' menu lets you instantly travel to famous planetary alignments - popularly called planet parades - and conjunctions, from tight five- and six-planet clusters to the moments the planets spread evenly around the Sun. It includes the planet parades of June 2022, January and February 2025, February and August 2026, and the next big ones on 25 December 2027, 3 February 2034 and 8 September 2040. You can also set any date yourself to check an alignment."
       }
     },
     {
@@ -172,7 +172,7 @@
 		<div id="dateRow"><span id="dateValue">—</span></div>
 		<div id="gotoRow">
 			<button class="btn accent" id="today">Today</button>
-			<input type="date" id="dateInput" step="60" aria-label="Go to date and time (UTC)" title="Date and time (UTC) — the time can be set here too">
+			<span id="dateWrap"><input type="date" id="dateShow" tabindex="-1" aria-hidden="true" inert><input type="datetime-local" id="dateInput" step="60" aria-label="Go to date and time (UTC)" title="Date and time (UTC) — the time can be set here too"></span>
 			<select id="era" aria-label="Era (AD or BC)" title="Switch the year between AD and BC">
 				<option value="AD">AD</option>
 				<option value="BC">BC</option>
@@ -326,7 +326,10 @@
 		<p>Yes. The 'Jump to a notable alignment' menu lets you instantly travel to famous
 		planetary alignments - popularly called planet parades - and conjunctions, from
 		tight five- and six-planet clusters to the moments the planets spread evenly
-		around the Sun. You can also set any date yourself to check an alignment.</p>
+		around the Sun. It includes the planet parades of June 2022, January and
+		February 2025, February and August 2026, and the next big ones on 25 December
+		2027, 3 February 2034 and 8 September 2040. You can also set any date yourself
+		to check an alignment.</p>
 
 		<h3>What are the stars in the background?</h3>
 		<p>The background is 1,637 naked-eye stars from the HYG database, placed in their

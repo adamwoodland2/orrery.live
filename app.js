@@ -1046,7 +1046,9 @@ const todayBtn     = document.getElementById('today');
 const shareBtn     = document.getElementById('share');
 const shareIcon    = shareBtn.innerHTML; // restored after the copied-✓ flash
 const dateValue    = document.getElementById('dateValue');
-const dateInput    = document.getElementById('dateInput');
+const dateInput    = document.getElementById('dateInput'); // datetime-local, the real control
+const dateShow     = document.getElementById('dateShow');  // date-only twin shown at rest
+const dateWrap     = document.getElementById('dateWrap');
 const eraSel       = document.getElementById('era');
 const tooltip      = document.getElementById('tooltip');
 const brightSlider = document.getElementById('brightness');
@@ -1315,10 +1317,11 @@ function refreshDateUI() {
 	if (document.activeElement !== dateInput && document.activeElement !== eraSel) {
 		const civil = y <= 0 ? 1 - y : y;
 		if (civil >= 1 && civil <= 9999) {
-			dateInput.value = inputValueFor(d, dateInput.type === 'datetime-local');
+			dateInput.value = inputValueFor(d, true);
+			dateShow.value = inputValueFor(d, false);
 			eraSel.value = y <= 0 ? 'BC' : 'AD';
 		} else {
-			dateInput.value = '';
+			dateInput.value = dateShow.value = '';
 		}
 	}
 	// JPL long-range elements are fitted for 3000 BC – 3000 AD; flag anything outside.
@@ -1405,22 +1408,21 @@ shareBtn.addEventListener('click', async () => {
 // Combine the date picker (civil year 1–9999) with the AD/BC selector so the
 // full 3000 BC – 3000 AD range is reachable despite the native year limit.
 // The field shows just the date at rest (the time is in the bar above it) but
-// becomes a date+time control while it has focus, so the time can be set in
-// the same place. Values are "YYYY-MM-DD" or "YYYY-MM-DDTHH:MM", read as UTC to
-// match the label; a date-only value keeps the current time of day.
+// is a date+time control while it has focus, so the time can be set in the
+// same place: #dateShow is an inert date-only twin for display and #dateInput,
+// the real datetime-local control, lies over it and is revealed by CSS while
+// focused. (Neither input ever changes type — Firefox drops the first click on
+// a rebuilt input and leaves its picker stuck after a type change.) Values are
+// "YYYY-MM-DD" or "YYYY-MM-DDTHH:MM", read as UTC to match the label; a
+// date-only value keeps the current time of day.
 function inputValueFor(d, withTime) {
 	const p2 = (n) => String(n).padStart(2, '0');
 	const y = d.getUTCFullYear(), civil = y <= 0 ? 1 - y : y;
 	const date = `${String(civil).padStart(4, '0')}-${p2(d.getUTCMonth() + 1)}-${p2(d.getUTCDate())}`;
 	return withTime ? `${date}T${p2(d.getUTCHours())}:${p2(d.getUTCMinutes())}` : date;
 }
-function setDateInputMode(withTime) {
-	const cur = daysToDate(simDays), y = cur.getUTCFullYear(), civil = y <= 0 ? 1 - y : y;
-	dateInput.type = withTime ? 'datetime-local' : 'date'; // changing type drops the value…
-	dateInput.value = civil >= 1 && civil <= 9999 ? inputValueFor(cur, withTime) : ''; // …so rewrite it
-}
-dateInput.addEventListener('focus', () => { if (dateInput.type !== 'datetime-local') setDateInputMode(true); });
-dateInput.addEventListener('blur', () => setDateInputMode(false));
+dateInput.addEventListener('focus', () => dateWrap.classList.add('open'));
+dateInput.addEventListener('blur', () => { dateWrap.classList.remove('open'); refreshDateUI(); }); // resync both twins
 function applyDateInput() {
 	if (!dateInput.value) return;
 	const now = daysToDate(simDays);
@@ -1455,6 +1457,9 @@ syncFilterUI();
 // for BC dates the native picker can't represent. `show` lists the categories
 // to display for that event, so selecting it auto-declutters the view.
 // (These are planetary events, so Pluto/dwarfs and moons are hidden.)
+// "Planet parade" entries are the popular, geocentric kind — several planets
+// in the same part of Earth's sky at dusk or dawn — on the dates Wikipedia and
+// Star Walk give, each checked against this model's geocentric elongations.
 const EVENTS = [
 	{ days: -1733223.7, show: ['planet'], note: 'Six planets (incl. Earth) within 10°' },
 	{ days: -1544576.7, show: ['planet'], note: 'Tightest five-planet — within 7°' },
@@ -1469,9 +1474,17 @@ const EVENTS = [
 	{ days: -5074.05, show: ['planet', 'comets'], note: "Halley's Comet at perihelion" },
 	{ days:    -3741, show: ['planet', 'dwarf'], note: 'Pluto inside Neptune’s orbit' },
 	{ days:     7491, show: ['planet'], note: 'Five-planet dawn — within 27°' },
+	{ days:     8210, show: ['planet'], note: 'Planet parade — five naked-eye in order at dawn' },
+	{ days:     8920, show: ['planet'], note: 'Planet parade — six planets at dawn' },
+	{ days:     9152, show: ['planet'], note: 'Planet parade — six planets at dusk' },
+	{ days:     9190, show: ['planet'], note: 'Planet parade — all seven planets at dusk' },
+	{ days:     9555, show: ['planet'], note: 'Planet parade — six planets at dusk' },
+	{ days:     9720, show: ['planet'], note: 'Planet parade — six planets at dawn' },
+	{ days:    10220, show: ['planet'], note: 'Planet parade — six planets at dusk' },
 	{ days: 10427.305, show: ['planet', 'major'], note: 'Galilean moons tightest (~59°)' },
+	{ days:    12452, show: ['planet'], note: 'Planet parade — all seven planets at dusk' },
 	{ days:    13228, show: ['planet'], note: 'Venus, Mars, Jupiter & Saturn at dusk' },
-	{ days:    14846, show: ['planet'], note: 'Five naked-eye planets within 20°' },
+	{ days:    14861, show: ['planet'], note: 'Planet parade — five naked-eye within 10° at dusk' },
 	{ days: 41905.135, show: ['planet'], note: 'Inner four aligned — within 2°' },
 	{ days:   152768, show: ['planet'], note: 'Tight five-planet — within 11°' }
 ];

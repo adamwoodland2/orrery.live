@@ -66,11 +66,20 @@ canvas { display: block; }
 }
 #dateValue { font-weight: 600; font-size: 14px; font-variant-numeric: tabular-nums; }
 #gotoRow { display: flex; flex-wrap: wrap; gap: 8px; align-items: center; margin-bottom: 8px; }
+/* The date field is two stacked inputs: #dateShow (date only, inert, just for
+   display) and #dateInput (datetime-local, the real control) laid over it and
+   invisible until it has focus. Swapping a single input's type on focus/blur
+   used to do this, but Firefox loses the first click on a rebuilt input and
+   leaves its picker stuck after a type change — so nothing changes type now. */
+#dateWrap { position: relative; display: flex; flex: 1 1 84px; min-width: 0; }
 #gotoRow input[type=date], #gotoRow input[type=datetime-local] {
-	flex: 1 1 84px; min-width: 0; font: inherit; color: inherit; padding: 6px 6px;
+	flex: 1 1 auto; width: 100%; min-width: 0; font: inherit; color: inherit; padding: 6px 6px;
 	background: rgba(255,255,255,0.06); border: 1px solid rgba(255,255,255,0.18);
 	border-radius: 8px; color-scheme: dark;
 }
+#dateInput { position: absolute; inset: 0; opacity: 0; }
+#dateWrap.open #dateInput { opacity: 1; }
+#dateWrap.open #dateShow { visibility: hidden; }
 #gotoRow #era {
 	flex: 0 0 auto; font: inherit; color: inherit; padding: 6px 4px;
 	background: rgba(255,255,255,0.06); border: 1px solid rgba(255,255,255,0.18);
