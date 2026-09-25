@@ -17,4 +17,6 @@ Technical: static site built on three.js, MIT licensed, installable PWA that wor
 
 ## Related
 
-- [Adam's Arcade](https://games.adamwoodland.com/): other free browser games and tools by the same author
+- [nearest.land](https://nearest.land/): click any coast on a 3D globe and see what lies across the water in every direction, by the same author
+- [Adam's Arcade](https://games.adamwoodland.com/): all of the author's free browser games and tools
+- [Adam Woodland](https://adamwoodland.com/): the author, an OT/ICS cybersecurity consultant; this site is a side project
